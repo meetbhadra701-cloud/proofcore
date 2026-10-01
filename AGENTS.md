@@ -26,3 +26,18 @@ After engineering is complete, create every document listed in the owner's learn
 Create `docs/AI_CONTRIBUTION.md` that accurately distinguishes AI-generated work, validation performed, and the human's subsequent study. Keep every teach-back question marked UNASSESSED until the human answers it.
 
 At completion, distinguish `MILESTONE 1: ENGINEERING COMPLETE` from `MILESTONE 1: HUMAN LEARNING UNASSESSED`.
+
+## Milestone 2 durable invariants
+
+- Preserve M1 as the frozen architectural contract unless a demonstrated contract defect requires a documented correction. Never redesign the processor for stylistic preference.
+- The C++ reference is an architectural interpreter only: no pipeline registers, cycle state, forwarding, stalls, flushes, or RTL-generated decode tables.
+- Keep the ISA reference decoder independent from `rtl/`; shared assumptions are public RISC-V opcode/field encodings and explicitly documented M1 subset policies.
+- Keep RTL-adapter memory and reference memory as distinct copies with identical deterministic initial bytes. Each copy changes only from its own implementation's store semantics. Do not route one model's stores into the other's memory.
+- Advance the reference once per valid architectural retirement, never once per RTL cycle. Compare only meaningful retirement fields and document every don't-care decision.
+- Every random program has a fixed recorded seed, a bounded architectural exit, and a safety cycle/instruction limit. A timeout is a failure state, never a pass.
+- Comparator corruption is allowed only behind an explicit self-test-only mode and must produce an ordinary structured failure artifact. Normal regression runs must not activate it.
+- Preserve all M1 tests and add M2 checks alongside them. `make verify` must continue running every completed milestone gate.
+- Never silently weaken correctness checks to make a test pass. When the model, generator, comparator, or RTL disagrees, identify and document the root cause before changing expectations.
+- Failure artifacts must be sufficient to reconstruct the program and initial memory and must not claim minimization or causal localization.
+- Do not implement RVFI, formal proofs/SVA, ProofTrace, mutation testing, witness minimization, PPA/OpenROAD, causal localization, or AI optimization in M2.
+- After engineering gates pass, create the full M2 learning pack and leave every teach-back question `UNASSESSED` until answered by the human.

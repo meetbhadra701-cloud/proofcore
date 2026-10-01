@@ -12,12 +12,20 @@ OpenAI Codex (GPT-6 model family) was used as the implementation and documentati
 
 The human supplied the project requirements and authorized autonomous implementation. The human did not write RTL during this milestone.
 
+## Milestone 2 contribution
+
+OpenAI Codex also generated the C++ reference decoder/model, Verilator differential driver/comparator/artifact writer, Python deterministic program generator, M2 build targets, decisions/status/verification records, and the complete M2 learning pack. The human supplied the M2 specification and directed this end-to-end workflow; the human has not yet completed teach-back.
+
 ## Validation performed
 
 The generated implementation was run through Verilator 5.032 lint with `-Wall`, a Cocotb 2.1.0 regression under Verilator, and Yosys 0.52 synthesis plus structural checks. The final observed results and commands are recorded in `docs/verification/milestone-1.md` and `docs/MILESTONE_1_REPORT.md`.
 
 The regression caught and led to a fix for byte/halfword store payload lane masking. The tool compatibility work kept one RTL source and used packed-vector module boundaries where Yosys 0.52 could not accept typed struct ports. A failed Icarus experiment is disclosed; it is not counted as passing validation.
 
+For M2, the reference model was separately compiled and tested with GCC 15.2.0 using C++20 and `-Wall -Wextra -Wpedantic -Werror`. Verilator 5.032 co-simulation compared nine M1-derived programs and 500 seeded generated programs against the C++ model at each valid retirement; independent data memories were compared at program end. A test-only sampled-event corruption was detected and produced the normal failure artifact. The exact seed set, program/retirement counts, tool versions, and gate outcomes are recorded in `docs/verification/milestone-2.md` and `docs/MILESTONE_2_REPORT.md`.
+
+During development, early C++ test expectations for SLL/XOR-family results and a misaligned JALR test target were corrected after checking the actual encoded operands and M1 alignment policy. These were reference-test construction errors, not discovered RTL defects. No RTL source was changed for M2.
+
 ## What this does and does not establish
 
-These checks are useful engineering evidence, but they are not an independent human implementation, a formal proof, or proof that every possible program is correct. No one has yet completed the teach-back exam. The human is expected to study the generated design and validate their own understanding before claiming independent authorship or mastery.
+These checks are useful engineering evidence, but they are not an independent human implementation, a formal proof, or proof that every possible program is correct. No one has yet completed either teach-back exam. The human is expected to study the generated design and validate their own understanding before claiming independent authorship or mastery.

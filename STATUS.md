@@ -2,32 +2,37 @@
 
 ## Current position
 
-- Milestone: 1 — Processor Foundation
-- State: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** The complete implementation, directed simulation, Verilator lint, and Yosys synthesis gates pass. The requested learning pack and report are present.
-- Current task: none; next work begins with human teach-back review or Milestone 2 planning.
-- RTL top: `core` in `rtl/core.sv`.
+- Milestone 1: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** Preserved at `54500b0a10da917249087fe246179b71066c1ced` (`milestone-1` tag); `make verify` passed before M2 changes.
+- Milestone 2: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** All requested M2 systems, final evidence, and learning materials are present.
+- Current task: none. Recommended next work is the human teach-back and then Milestone 3 planning.
+- RTL top remains `core` in `rtl/core.sv`; M2 has not modified processor RTL.
 
-## Implemented behavior
+## Implemented M2 components
 
-- Five-stage in-order RV32I subset with explicit valid state.
-- All listed register/immediate ALU operations, aligned LB/LH/LW/LBU/LHU and SB/SH/SW, all six branches, JAL/JALR, LUI, and AUIPC.
-- EX/MEM and MEM/WB forwarding with youngest-producer priority, x0 exclusion, and a one-cycle load-use interlock.
-- EX-stage redirect, younger IF/ID and ID/EX flush, fixed-width PC update, and a WB Milestone-1 retirement record.
-- Deterministic inert no-op policy for unsupported encodings and misaligned memory/control transfers.
+- Independent C++20 single-step reference state, decoder, byte memory, and retirement events under `reference/`.
+- Verilator driver and semantic retirement comparator under `sim/diff/`.
+- Separate, identically seeded RTL and reference memories; independent store application; per-load metadata/value comparison; final memory-byte comparison.
+- Python deterministic xorshift64* generator with arithmetic, dependency, memory, load-use, control, and mixed tiers.
+- Nine differential cases ported from the M1 Cocotb scenarios.
+- Structured mismatch artifacts and explicit test-only comparator corruption mode.
 
-## Validation evidence
+## Final validation evidence
 
-- `make test`: PASS — 1 Cocotb regression test runs 9 directed program scenarios, checking 90 expected valid retirement events across the traces, exact retirement PCs/values, masks/data, memory bytes, stalls, and flushes.
-- `make lint`: PASS — Verilator 5.032, `--lint-only --sv -Wall`, no warnings.
-- `make synth-check`: PASS — Yosys 0.52, hierarchy check, process lowering, structural checks, generic synthesis, and final check; zero problems reported.
-- Tool versions: Python 3.14.0, Cocotb 2.1.0, Verilator 5.032, Yosys 0.52. Tools were locally extracted from Ubuntu packages because administrator authentication blocked system package installation.
-- Icarus 12.0: NOT COUNTED. A direct compile attempt emitted packed-struct width/frontend warnings; the Cocotb Icarus run was not completed. The required simulation gate passed with Verilator.
-- Formal verification: NOT RUN; no formal correctness claim is made.
+- `make verify`: PASS after final M2 code changes; includes M1 lint/simulation/synthesis and all M2 gates.
+- `make reference-test`: PASS, four C++ unit suites under `-Wall -Wextra -Wpedantic -Werror`.
+- `make diff-directed`: PASS, nine M1-derived programs, 90 retirements, 148 RTL cycles.
+- `make comparator-selftest`: PASS as a Make target; injected x6 14→7 at retirement 2 produced the required mismatch/artifact and replayed.
+- `make diff-random`: PASS, 500 programs, seeds 12345–12844, 11,188 retirement comparisons, 15,521 RTL cycles, no failures/timeouts.
+- Exact tier counts, static instruction totals, tool versions, and commands are in `docs/verification/milestone-2.md`.
+- Formal verification: NOT RUN. M2 differential testing is empirical and is not proof of correctness.
 
-## Known limitations
+## Known tool and project limitations
 
-No traps, interrupts, privilege modes, compressed instructions, misaligned split accesses, shared/variable-latency memory, caches, atomics, RV32M, floating point, branch prediction, out-of-order execution, formal proof infrastructure, RVFI, or ProofTrace. Unsupported instructions and out-of-contract misalignment are deterministically suppressed as specified; this is not full RISC-V exception compliance. Yosys generic cell statistics are not a physical area/timing result.
+- C++ compiler is GCC 15.2.0; Verilator 5.032; Python 3.14.4 in the current environment. The M1 Yosys 0.52 result is recorded separately.
+- The installed Verilator 5.032 support source emits two `%p` format warnings under GCC 15.2; the Verilator harness build uses `-Wno-error=format` for that third-party runtime issue. The reference model and its tests still compile with full `-Werror`.
+- The reference implements exactly the M1 subset and deterministic no-effect unsupported/misalignment policies. It does not model traps or privilege architecture.
+- Random generation is structured and bounded, not exhaustive. The failure system does not minimize witnesses or localize root cause.
 
 ## Learning state
 
-All teach-back questions remain `UNASSESSED`. Reading the learning pack is not evidence that the human has learned or can independently reproduce the design.
+Milestone 1 and Milestone 2 teach-back questions remain `UNASSESSED`. Reading AI-generated explanations is not evidence of human mastery.

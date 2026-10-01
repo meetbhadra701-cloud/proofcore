@@ -1,41 +1,42 @@
-# ProofCore Milestone 1 Plan
+# ProofCore Milestone Plan
 
-## Workflow and status
+## Baseline
 
-The project owner authorized autonomous completion of engineering before teaching. All M1 implementation and verification tasks are complete. The learning pack is also created; its teach-back remains unassessed until the human responds. Correctness checks were not weakened to obtain a pass.
+Milestone 1 is preserved at commit `54500b0a10da917249087fe246179b71066c1ced`, tag `milestone-1`. Its full baseline command `make verify` passed before M2 work began. M1 acceptance is retained and remains required through `make verify-m1`.
 
-## Completed stages
+## Milestone 1
 
-| Task | Scope | Acceptance evidence | Reproduction command | State |
+M1 processor implementation, directed cocotb regression, Verilator lint, Yosys synthesis check, specification, and learning pack are complete. Exact baseline evidence is in `docs/verification/milestone-1.md` and `docs/MILESTONE_1_REPORT.md`.
+
+## Milestone 2 tasks
+
+| Task | Scope | Acceptance evidence | Command | State |
 | --- | --- | --- | --- | --- |
-| M1.0 | Freeze architecture/specification | `SPEC.md`, architecture, decisions, pipeline payloads, unsupported/misaligned rules, and retirement contract agree | Manual consistency review | Complete |
-| M1.1 | ISA enums, controls, pipeline/retirement types | `proofcore_pkg.sv` lint and elaboration as part of full core | `make lint` | Complete |
-| M1.2 | ALU and I/S/B/U/J immediates | Directed operation, sign extension, shift, and branch-offset tests | `make test` | Complete |
-| M1.3 | Register file | x0, synchronous write, two reads, WB write-through | `make test` | Complete |
-| M1.4 | Decoder/control | Decode table and directed supported/unsupported instructions | `make test` | Complete |
-| M1.5 | Pipeline state | Explicit valid, hold, bubble, reset and flush exercised by core programs | `make test` | Complete |
-| M1.6 | Basic core | Independent and dependent instruction sequences retire correctly | `make test` | Complete |
-| M1.7 | Forwarding | EX/MEM, MEM/WB, priority, two sources and x0 | `make test` | Complete |
-| M1.8 | Load-use | Both source operands, load-to-branch, x0 false dependency, cycle checks | `make test` | Complete |
-| M1.9 | Branches, jumps, flush | Both outcomes for each branch, JAL/JALR, wrong-path writes, negative offset | `make test` | Complete |
-| M1.10 | Loads/stores | All widths and signedness, aligned byte lanes, masks and store data | `make test` | Complete |
-| M1.11 | Retirement | Ordered PC/value/memory events and no bubble/wrong-path retirement | `make test` | Complete |
-| M1.12 | Integration regression | Nine directed program scenarios pass | `make test` | Complete |
-| M1.13 | Lint cleanup | Verilator 5.032 `-Wall`, no warnings | `make lint` | Complete |
-| M1.14 | Synthesis sanity | Yosys 0.52 elaborates and synthesizes; final `check` reports zero problems | `make synth-check` | Complete |
-| M1.15 | Final engineering audit | Spec/status/decisions/report and full teaching pack reflect the tested implementation | `make verify` plus documentation consistency review | Complete |
+| M2.0 | Preserve and rerun M1 baseline | Commit/tag captured; all M1 gates pass | `make verify-m1` | Complete |
+| M2.1 | Independent C++ architectural state, memory, decoder, and step model | C++20 strict-warning build and unit tests for all supported instruction families | `make reference-test` | Complete |
+| M2.2 | Specify retirement comparison and memory synchronization | Independent memories, explicit meaningful-field rules, final byte-state comparison | Review `docs/architecture/milestone-2.md` | Complete |
+| M2.3 | Verilator driver and retirement lockstep comparator | RTL runs from matching program/memory image; every valid retirement compared | `make diff-directed` | Complete |
+| M2.4 | M1 directed differential corpus | M1 scenario translations pass and preserve original regression | `make diff-directed` and `make verify-m1` | Complete |
+| M2.5 | Deterministic program generator | Six tiers, fixed seeds, bounded control flow, manifest | `tools/programgen/generate.py` | Complete |
+| M2.6 | Structured failure artifact | Seed, machine code, disassembly, memory image, states/events, recent trace | Automatic on mismatch | Complete |
+| M2.7 | Comparator self-test | Injected expected-field corruption fails and emits ordinary artifact | `make comparator-selftest` | Complete |
+| M2.8 | Random campaign | 500 seeded programs, exact counts and distribution recorded | `make diff-random` | Complete |
+| M2.9 | Final gates and report | All M1/M2 gates pass; counts and limitations recorded | `make verify` | Complete |
+| M2.10 | Professor-mode learning pack | All requested guides, code walkthrough, end-to-end example, 50 unassessed questions | Documentation review | Complete |
 
 ## Validation commands
 
 ```sh
-make test
-make lint
-make synth-check
+make verify-m1
+make reference-test
+make diff-directed
+make comparator-selftest
+make diff-random
 make verify
 ```
 
-`make verify` runs lint, the Cocotb regression, and Yosys synthesis in sequence. The regression is one Cocotb test containing nine independently reset directed programs. It checks 90 expected valid retirement events over its traces. An Icarus 12.0 compile was explored but not counted because the locally extracted frontend emitted packed-struct width warnings; Verilator is the accepted simulator for this milestone.
+`make verify` is the top-level gate. It runs M1 lint/simulation/synthesis plus the independent model tests, directed differential tests, self-test, and the configured random campaign. Random seeds and tier distribution are stored in the generated corpus manifest; use `M2_SEED` and `M2_PROGRAMS` to choose a reproducible campaign.
 
-## Remaining work
+## Current status
 
-No engineering task remains in Milestone 1. Human learning is still unassessed; all 48 questions in `docs/learning/milestone-1/FINAL_TEACHBACK.md` are marked `UNASSESSED`. Milestone 2 should start by choosing and reviewing an ISA-level reference model and an RVFI adapter contract before adding formal infrastructure.
+Milestone 2 engineering and teaching materials are complete. The final integrated `make verify` passed, and actual outcomes are frozen in `docs/verification/milestone-2.md` and `docs/MILESTONE_2_REPORT.md`. Human learning remains unassessed until the teach-back is answered.
