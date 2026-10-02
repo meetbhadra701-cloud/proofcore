@@ -19,6 +19,29 @@ module core (
   output logic [3:0]  retire_mem_write_mask,
   output logic [31:0] retire_mem_write_data,
   output logic [31:0] retire_next_pc
+`ifdef PROOFCORE_RVFI
+  , output logic        rvfi_valid
+  , output logic [63:0] rvfi_order
+  , output logic [31:0] rvfi_insn
+  , output logic        rvfi_trap
+  , output logic        rvfi_halt
+  , output logic        rvfi_intr
+  , output logic [1:0]  rvfi_mode
+  , output logic [1:0]  rvfi_ixl
+  , output logic [4:0]  rvfi_rs1_addr
+  , output logic [4:0]  rvfi_rs2_addr
+  , output logic [31:0] rvfi_rs1_rdata
+  , output logic [31:0] rvfi_rs2_rdata
+  , output logic [4:0]  rvfi_rd_addr
+  , output logic [31:0] rvfi_rd_wdata
+  , output logic [31:0] rvfi_pc_rdata
+  , output logic [31:0] rvfi_pc_wdata
+  , output logic [31:0] rvfi_mem_addr
+  , output logic [3:0]  rvfi_mem_rmask
+  , output logic [3:0]  rvfi_mem_wmask
+  , output logic [31:0] rvfi_mem_rdata
+  , output logic [31:0] rvfi_mem_wdata
+`endif
 );
   typedef proofcore_pkg::decode_t decode_t;
   typedef proofcore_pkg::ifid_t ifid_t;
@@ -72,6 +95,9 @@ module core (
   logic [7:0] load_byte;
   logic [15:0] load_half;
   logic [31:0] load_value, wb_value;
+`ifdef PROOFCORE_RVFI
+  logic [63:0] rvfi_order_q;
+`endif
 
   assign imem_addr = pc_q;
   assign ifid_d.pc = pc_q;
@@ -215,6 +241,12 @@ module core (
     exmem_d.mem_read_mask = ex_mem_rmask;
     exmem_d.mem_write_mask = ex_mem_wmask;
     exmem_d.mem_write_data = ex_mem_wdata;
+`ifdef PROOFCORE_RVFI
+    exmem_d.uses_rs1 = idex_q.ctl.uses_rs1;
+    exmem_d.uses_rs2 = idex_q.ctl.uses_rs2;
+    exmem_d.rs1_value = idex_q.ctl.uses_rs1 ? ex_rs1 : 32'b0;
+    exmem_d.rs2_value = idex_q.ctl.uses_rs2 ? ex_rs2 : 32'b0;
+`endif
   end
 
   assign dmem_addr = {exmem_q.effective_addr[31:2], 2'b00};
@@ -257,6 +289,13 @@ module core (
     memwb_d.mem_write_mask = exmem_q.mem_write_mask;
     memwb_d.mem_write_data = exmem_q.mem_write ? exmem_q.mem_write_data : 32'b0;
     memwb_d.next_pc = exmem_q.next_pc;
+`ifdef PROOFCORE_RVFI
+    memwb_d.uses_rs1 = exmem_q.uses_rs1;
+    memwb_d.uses_rs2 = exmem_q.uses_rs2;
+    memwb_d.rs1_value = exmem_q.rs1_value;
+    memwb_d.rs2_value = exmem_q.rs2_value;
+    memwb_d.mem_read_data = exmem_q.mem_read ? dmem_rdata : 32'b0;
+`endif
   end
 
   always_comb begin
@@ -287,11 +326,165 @@ module core (
   assign retire_mem_write_data = retire_record.mem_write_data;
   assign retire_next_pc = retire_record.next_pc;
 
+`ifdef PROOFCORE_RVFI
+  // RVFI values are observed at the same WB retirement point as the M1
+  // record. Source data carries the bypassed EX operands, not stale ID reads.
+  always_comb begin
+    rvfi_valid = memwb_valid;
+    rvfi_order = rvfi_order_q;
+    rvfi_insn = memwb_valid ? memwb_q.insn : 32'b0;
+    rvfi_trap = 1'b0;
+    rvfi_halt = 1'b0;
+    rvfi_intr = 1'b0;
+    rvfi_mode = 2'b11; // machine mode encoding from the upstream RVFI spec
+    rvfi_ixl = 2'b01;  // RV32 encoding
+    rvfi_rs1_addr = (memwb_valid && memwb_q.uses_rs1) ? memwb_q.insn[19:15] : 5'b0;
+    rvfi_rs2_addr = (memwb_valid && memwb_q.uses_rs2) ? memwb_q.insn[24:20] : 5'b0;
+    rvfi_rs1_rdata = (rvfi_rs1_addr != 5'b0) ? memwb_q.rs1_value : 32'b0;
+    rvfi_rs2_rdata = (rvfi_rs2_addr != 5'b0) ? memwb_q.rs2_value : 32'b0;
+    rvfi_rd_addr = (memwb_valid && memwb_q.reg_write) ? memwb_q.rd : 5'b0;
+    rvfi_rd_wdata = (rvfi_rd_addr != 5'b0) ? memwb_q.rd_value : 32'b0;
+    rvfi_pc_rdata = memwb_valid ? memwb_q.pc : 32'b0;
+    rvfi_pc_wdata = memwb_valid ? memwb_q.next_pc : 32'b0;
+    rvfi_mem_addr = (memwb_valid && ((memwb_q.mem_read_mask != 4'b0) ||
+                                    (memwb_q.mem_write_mask != 4'b0)))
+                      ? {memwb_q.mem_addr[31:2], 2'b00} : 32'b0;
+    rvfi_mem_rmask = memwb_valid ? memwb_q.mem_read_mask : 4'b0;
+    rvfi_mem_wmask = memwb_valid ? memwb_q.mem_write_mask : 4'b0;
+    rvfi_mem_rdata = (memwb_valid && (memwb_q.mem_read_mask != 4'b0))
+                       ? memwb_q.mem_read_data : 32'b0;
+    rvfi_mem_wdata = (memwb_valid && (memwb_q.mem_write_mask != 4'b0))
+                       ? memwb_q.mem_write_data : 32'b0;
+`ifdef PROOFCORE_RVFI_NEGATIVE
+    if (rvfi_valid && rvfi_rd_addr != 5'b0) rvfi_rd_wdata = rvfi_rd_wdata ^ 32'b1;
+`endif
+  end
+
+  always_ff @(posedge clk) begin
+    if (reset) rvfi_order_q <= 64'b0;
+    else if (memwb_valid) rvfi_order_q <= rvfi_order_q + 64'd1;
+  end
+`endif
+
   always_ff @(posedge clk) begin
     if (reset) pc_q <= 32'b0;
     else if (redirect) pc_q <= redirect_target;
     else if (!load_use_stall) pc_q <= pc_q + 32'd4;
   end
+
+`ifdef FORMAL
+  logic f_past_valid;
+  logic f_stall_q;
+  logic f_redirect_q;
+  logic f_held_ifid_valid_q;
+  logic [31:0] f_held_pc_q;
+  ifid_t f_held_ifid_q;
+  logic [31:0] f_redirect_target_q;
+  logic [31:0] f_redirect_pc_q;
+  logic f_stall_pending_q;
+  logic f_redirect_pending_q;
+`ifdef PROOFCORE_RVFI
+  logic [63:0] f_expected_order_q;
+`endif
+
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      f_past_valid <= 1'b0;
+      f_stall_q <= 1'b0;
+      f_redirect_q <= 1'b0;
+      f_held_pc_q <= 32'b0;
+      f_held_ifid_q <= '0;
+      f_redirect_target_q <= 32'b0;
+      f_redirect_pc_q <= 32'b0;
+      f_held_ifid_valid_q <= 1'b0;
+      f_stall_pending_q <= 1'b0;
+      f_redirect_pending_q <= 1'b0;
+`ifdef PROOFCORE_RVFI
+      f_expected_order_q <= 64'b0;
+`endif
+    end else begin
+      f_past_valid <= 1'b1;
+`ifdef PROOFCORE_RVFI
+      assert(rvfi_order == f_expected_order_q);
+      assert(rvfi_valid == memwb_valid);
+      if (memwb_valid) f_expected_order_q <= f_expected_order_q + 64'd1;
+`endif
+      if (f_past_valid) begin
+        assert(rf_rdata1 == 32'b0 || ifid_q.insn[19:15] != 5'b0);
+        assert(rf_rdata2 == 32'b0 || ifid_q.insn[24:20] != 5'b0);
+        assert(!retire_valid || memwb_valid);
+        assert(!retire_rd_write || (retire_valid && retire_rd != 5'b0));
+        assert(!dmem_read_enable || (exmem_valid && exmem_q.mem_read));
+        assert((dmem_write_mask == 4'b0) ||
+               (exmem_valid && exmem_q.mem_write && exmem_q.mem_write_mask != 4'b0));
+        assert(!retire_valid || (retire_mem_read_mask == 4'b0 ||
+                                 retire_mem_write_mask == 4'b0));
+        assert(!retire_valid || retire_mem_write_mask == 4'b0 || !retire_rd_write);
+
+        if (fwd_rs1_sel == FWD_EXMEM) assert(ex_rs1 == exmem_q.alu_result);
+        if (fwd_rs1_sel == FWD_MEMWB) assert(ex_rs1 == memwb_q.rd_value);
+        if (fwd_rs2_sel == FWD_EXMEM) assert(ex_rs2 == exmem_q.alu_result);
+        if (fwd_rs2_sel == FWD_MEMWB) assert(ex_rs2 == memwb_q.rd_value);
+        if (exmem_valid && exmem_q.reg_write && !exmem_q.mem_read &&
+            exmem_q.rd != 5'b0 && exmem_q.rd == idex_q.rs1 &&
+            memwb_valid && memwb_q.reg_write && memwb_q.rd == idex_q.rs1)
+          assert(fwd_rs1_sel == FWD_EXMEM);
+        if (exmem_valid && exmem_q.reg_write && !exmem_q.mem_read &&
+            exmem_q.rd != 5'b0 && exmem_q.rd == idex_q.rs2 &&
+            memwb_valid && memwb_q.reg_write && memwb_q.rd == idex_q.rs2)
+          assert(fwd_rs2_sel == FWD_EXMEM);
+
+        if (f_stall_q) begin
+          assert(pc_q == f_held_pc_q);
+          assert(ifid_valid == f_held_ifid_valid_q);
+          assert(ifid_q.pc == f_held_ifid_q.pc);
+          assert(ifid_q.insn == f_held_ifid_q.insn);
+          assert(!idex_valid);
+        end
+        if (f_redirect_q) begin
+          assert(pc_q == f_redirect_target_q);
+          assert(!ifid_valid && !idex_valid);
+          assert(exmem_valid && exmem_q.pc == f_redirect_pc_q);
+        end
+        if (f_stall_pending_q && retire_valid) cover(1'b1);
+        if (f_redirect_pending_q && retire_valid) cover(1'b1);
+      end
+      f_stall_q <= load_use_stall;
+      f_redirect_q <= redirect;
+      f_held_pc_q <= pc_q;
+      f_held_ifid_q <= ifid_q;
+      f_held_ifid_valid_q <= ifid_valid;
+      f_redirect_target_q <= redirect_target;
+      f_redirect_pc_q <= idex_q.pc;
+      if (retire_valid) begin
+        f_stall_pending_q <= 1'b0;
+        f_redirect_pending_q <= 1'b0;
+      end
+      if (load_use_stall) f_stall_pending_q <= 1'b1;
+      if (redirect) f_redirect_pending_q <= 1'b1;
+    end
+  end
+
+  always_ff @(posedge clk) begin
+    if (!reset) begin
+      cover(fwd_rs1_sel == FWD_EXMEM || fwd_rs2_sel == FWD_EXMEM);
+      cover(fwd_rs1_sel == FWD_MEMWB || fwd_rs2_sel == FWD_MEMWB);
+      cover(exmem_valid && memwb_valid && exmem_q.rd != 5'b0 &&
+            exmem_q.rd == memwb_q.rd && exmem_q.rd == idex_q.rs1);
+      cover(load_use_stall);
+      cover(redirect && idex_q.ctl.branch != BR_NONE && ex_branch_taken);
+      cover(idex_valid && idex_q.ctl.branch != BR_NONE && !ex_branch_taken);
+      cover(redirect && idex_q.ctl.is_jal);
+      cover(redirect && idex_q.ctl.is_jalr);
+      cover(ex_mem_read);
+      cover(ex_mem_write);
+      cover(retire_valid && f_stall_pending_q);
+      cover(retire_valid && f_redirect_pending_q);
+      cover(retire_valid && retire_rd == 5'b0 && retire_rd_write == 1'b0 &&
+            retire_insn[11:7] == 5'b0 && retire_insn[6:0] == 7'b0010011);
+    end
+  end
+`endif
 
   if_id u_if_id (
     .clk(clk), .reset(reset), .hold(load_use_stall), .flush(redirect),

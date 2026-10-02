@@ -1,0 +1,76 @@
+SBY  0:32:30 [insn_addi_ch0] Removing directory '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0'.
+SBY  0:32:30 [insn_addi_ch0] Writing '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0/src/defines.sv'.
+SBY  0:32:30 [insn_addi_ch0] Writing '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0/src/insn_addi_ch0.sv'.
+SBY  0:32:30 [insn_addi_ch0] Copy '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/../../checks/rvfi_macros.vh' to '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0/src/rvfi_macros.vh'.
+SBY  0:32:30 [insn_addi_ch0] Copy '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/../../checks/rvfi_channel.sv' to '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0/src/rvfi_channel.sv'.
+SBY  0:32:30 [insn_addi_ch0] Copy '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/../../checks/rvfi_testbench.sv' to '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0/src/rvfi_testbench.sv'.
+SBY  0:32:30 [insn_addi_ch0] Copy '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/../../checks/rvfi_insn_check.sv' to '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0/src/rvfi_insn_check.sv'.
+SBY  0:32:30 [insn_addi_ch0] Copy '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/../../insns/insn_addi.v' to '/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0/src/insn_addi.v'.
+SBY  0:32:31 [insn_addi_ch0] engine_0: smtbmc z3
+SBY  0:32:31 [insn_addi_ch0] base: starting process "cd insn_addi_ch0/src; /tmp/proofcore-tools/root/usr/bin/yosys -ql ../model/design.log ../model/design.ys"
+SBY  0:32:31 [insn_addi_ch0] base: Warning: Replacing memory \data_memory with list of registers. See /mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:20
+SBY  0:32:31 [insn_addi_ch0] base: Warning: Replacing memory \instruction_memory with list of registers. See /mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:18
+SBY  0:32:33 [insn_addi_ch0] base: finished (returncode=0)
+SBY  0:32:33 [insn_addi_ch0] prep: starting process "cd insn_addi_ch0/model; /tmp/proofcore-tools/root/usr/bin/yosys -ql design_prep.log design_prep.ys"
+SBY  0:32:34 [insn_addi_ch0] prep: finished (returncode=0)
+SBY  0:32:34 [insn_addi_ch0] smt2: starting process "cd insn_addi_ch0/model; /tmp/proofcore-tools/root/usr/bin/yosys -ql design_smt2.log design_smt2.ys"
+SBY  0:32:34 [insn_addi_ch0] smt2: finished (returncode=0)
+SBY  0:32:34 [insn_addi_ch0] engine_0: starting process "cd insn_addi_ch0; yosys-smtbmc -s z3 --presat --noprogress -t 13  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2"
+SBY  0:32:34 [insn_addi_ch0] engine_0: ##   0:00:00  Solver: z3
+SBY  0:32:34 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assumptions in step 0..
+SBY  0:32:34 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assertions in step 0..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assumptions in step 1..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assertions in step 1..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assumptions in step 2..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assertions in step 2..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assumptions in step 3..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assertions in step 3..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assumptions in step 4..
+SBY  0:32:35 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assertions in step 4..
+SBY  0:32:36 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assumptions in step 5..
+SBY  0:32:36 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assertions in step 5..
+SBY  0:32:36 [insn_addi_ch0] engine_0: ##   0:00:00  Checking assumptions in step 6..
+SBY  0:32:36 [insn_addi_ch0] engine_0: ##   0:00:01  Checking assertions in step 6..
+SBY  0:32:36 [insn_addi_ch0] engine_0: ##   0:00:01  Checking assumptions in step 7..
+SBY  0:32:49 [insn_addi_ch0] engine_0: ##   0:00:14  Checking assertions in step 7..
+SBY  0:32:49 [insn_addi_ch0] engine_0: ##   0:00:14  Checking assumptions in step 8..
+SBY  0:33:31 [insn_addi_ch0] engine_0: ##   0:00:56  Checking assertions in step 8..
+SBY  0:33:31 [insn_addi_ch0] engine_0: ##   0:00:56  Checking assumptions in step 9..
+SBY  0:33:31 [insn_addi_ch0] engine_0: ##   0:00:57  Checking assertions in step 9..
+SBY  0:33:31 [insn_addi_ch0] engine_0: ##   0:00:57  Checking assumptions in step 10..
+SBY  0:33:35 [insn_addi_ch0] engine_0: ##   0:01:01  Checking assertions in step 10..
+SBY  0:33:35 [insn_addi_ch0] engine_0: ##   0:01:01  Checking assumptions in step 11..
+SBY  0:33:40 [insn_addi_ch0] engine_0: ##   0:01:06  Checking assertions in step 11..
+SBY  0:33:41 [insn_addi_ch0] engine_0: ##   0:01:06  Checking assumptions in step 12..
+SBY  0:34:04 [insn_addi_ch0] engine_0: ##   0:01:29  Checking assertions in step 12..
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  BMC failed!
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 1073741824
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 20994
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 20994
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 20994
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 4269935843
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 8390675
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 4290781188
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.instruction_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 16778851
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 1082130434
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 2390753280
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 545259520
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 2390753280
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 69206145
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 69206144
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 2164293633
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Value for anyconst rvfi_testbench.initial_data_word (/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv:0.0-0.0): 2164293633
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Assert failed in rvfi_testbench: rvfi_insn_check.sv:177.7-177.40 (_witness_.check_flatten_checker_inst__assert_rvfi_insn_check_sv_177_126)
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Writing trace to VCD file: engine_0/trace.vcd
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Writing trace to Verilog testbench: engine_0/trace_tb.v
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Writing trace to constraints file: engine_0/trace.smtc
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Writing trace to Yosys witness file: engine_0/trace.yw
+SBY  0:34:05 [insn_addi_ch0] engine_0: ##   0:01:30  Status: failed
+SBY  0:34:05 [insn_addi_ch0] engine_0: finished (returncode=1)
+SBY  0:34:05 [insn_addi_ch0] engine_0: Status returned by engine: FAIL
+SBY  0:34:05 [insn_addi_ch0] summary: Elapsed clock time [H:MM:SS (secs)]: 0:01:35 (95)
+SBY  0:34:05 [insn_addi_ch0] summary: Elapsed process time [H:MM:SS (secs)]: 0:01:32 (92)
+SBY  0:34:05 [insn_addi_ch0] summary: engine_0 (smtbmc z3) returned FAIL
+SBY  0:34:05 [insn_addi_ch0] summary: counterexample trace: insn_addi_ch0/engine_0/trace.vcd
+SBY  0:34:05 [insn_addi_ch0] summary:   failed assertion rvfi_testbench._witness_.check_flatten_checker_inst__assert_rvfi_insn_check_sv_177_126 at rvfi_insn_check.sv:177.7-177.40 step 12
+SBY  0:34:05 [insn_addi_ch0] DONE (FAIL, rc=0)

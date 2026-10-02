@@ -1,0 +1,10 @@
+{
+  "selftest_status": "PASS",
+  "expected_formal_status": "FAIL",
+  "observed_formal_status": "FAIL",
+  "properties": ["regfile.sv:26 x0 read port 1", "regfile.sv:27 x0 read port 2"],
+  "engine": "smtbmc z3",
+  "formal_depth": 16,
+  "counterexample_step": 3,
+  "source_define": "PROOFCORE_NEGATIVE_X0"
+}

@@ -8,9 +8,10 @@ YOSYS ?= $(shell command -v yosys 2>/dev/null || echo /tmp/proofcore-tools/root/
 VERILATOR_ROOT ?= $(shell if command -v verilator >/dev/null 2>&1; then verilator --getenv VERILATOR_ROOT; else echo /tmp/proofcore-tools/root/usr/share/verilator; fi)
 export VERILATOR_ROOT
 
-.PHONY: all lint lint-package test-units test-core test synth-check \
+.PHONY: all lint lint-rvfi lint-package test-units test-core test synth-check synth-check-rvfi \
 	verify-m1 reference-test diff-build diff-directed diff-random comparator-selftest \
-	verify-m2 verify clean
+	verify-m2 diff-rvfi-build diff-rvfi-directed diff-rvfi-random verify-m3-sim \
+	formal-rvfi formal-properties formal-cover formal-negative verify-formal verify-m3 verify clean
 all: verify
 
 lint-package:
@@ -26,6 +27,13 @@ test: test-units
 synth-check:
 	mkdir -p build
 	PATH=$(dir $(YOSYS)):$$PATH $(YOSYS) -Q -p 'read_verilog -sv $(RTL); hierarchy -check -top core; proc; check; synth -top core; check; stat' > build/yosys.log 2>&1; rc=$$?; tail -n 45 build/yosys.log; exit $$rc
+
+lint-rvfi:
+	$(VERILATOR) --lint-only --sv -Wall -DPROOFCORE_RVFI --top-module core $(RTL)
+
+synth-check-rvfi:
+	mkdir -p build
+	PATH=$(dir $(YOSYS)):$$PATH $(YOSYS) -Q -p 'read_verilog -sv -DPROOFCORE_RVFI $(RTL); hierarchy -check -top core; proc; check; synth -top core; check; stat' > build/yosys-rvfi.log 2>&1; rc=$$?; tail -n 45 build/yosys-rvfi.log; exit $$rc
 
 CXX ?= g++
 CXXFLAGS_M2 := -std=c++20 -Wall -Wextra -Wpedantic -Werror -I$(CURDIR)/reference/include
@@ -48,6 +56,10 @@ diff-build:
 	$(VERILATOR) --cc --exe --build --timing --top-module core --Mdir build/diff_obj \
 		-CFLAGS "$(CXXFLAGS_VERILATOR)" $(RTL) $(REFERENCE_SRC) $(DIFF_SRC)
 
+diff-rvfi-build:
+	$(VERILATOR) --cc --exe --build --timing -DPROOFCORE_RVFI --top-module core --Mdir build/diff_rvfi_obj \
+		-CFLAGS "$(CXXFLAGS_VERILATOR) -Wno-error=pedantic -DPROOFCORE_RVFI" $(RTL) $(REFERENCE_SRC) $(DIFF_SRC)
+
 diff-directed: diff-build
 	python3 tools/programgen/generate.py --m1-directed --out build/m2-directed
 	$(DIFF_BIN) --case-dir build/m2-directed
@@ -65,9 +77,34 @@ comparator-selftest: diff-build
 	test -f build/m2-selftest-failures/seed-$(M2_SEED)-cycle-*/failure.json
 	echo "PASS: injected retirement corruption was detected and artifact was written"
 
+diff-rvfi-directed: diff-rvfi-build
+	python3 tools/programgen/generate.py --m1-directed --out build/m3-rvfi-directed
+	build/diff_rvfi_obj/Vcore --case-dir build/m3-rvfi-directed
+
+diff-rvfi-random: diff-rvfi-build
+	python3 tools/programgen/generate.py --count $(M2_PROGRAMS) --seed $(M2_SEED) --out build/m3-rvfi-random
+	build/diff_rvfi_obj/Vcore --case-dir build/m3-rvfi-random
+
 verify-m2: reference-test diff-directed comparator-selftest diff-random
 
-verify: verify-m1 verify-m2
+verify-m3-sim: verify-m2 diff-rvfi-directed diff-rvfi-random
+
+formal-rvfi:
+	python3 scripts/run_riscv_formal.py --mode insn
+
+formal-properties:
+	python3 scripts/run_core_formal.py --mode prove
+
+formal-cover:
+	python3 scripts/run_core_formal.py --mode cover
+
+formal-negative:
+	python3 scripts/run_formal_negative.py
+
+verify-formal: formal-rvfi formal-properties formal-cover formal-negative
+verify-m3: verify-m1 verify-m3-sim lint-rvfi synth-check-rvfi verify-formal
+
+verify: verify-m1 verify-m2 diff-rvfi-directed
 
 clean:
 	rm -rf build

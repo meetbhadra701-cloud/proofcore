@@ -40,4 +40,30 @@ At completion, distinguish `MILESTONE 1: ENGINEERING COMPLETE` from `MILESTONE 1
 - Never silently weaken correctness checks to make a test pass. When the model, generator, comparator, or RTL disagrees, identify and document the root cause before changing expectations.
 - Failure artifacts must be sufficient to reconstruct the program and initial memory and must not claim minimization or causal localization.
 - Do not implement RVFI, formal proofs/SVA, ProofTrace, mutation testing, witness minimization, PPA/OpenROAD, causal localization, or AI optimization in M2.
+
+## Milestone 3 authorization and invariants
+
+Milestone 3 supersedes the M1/M2 non-goal lists above for this milestone only:
+optional RVFI, bounded `riscv-formal` checks, ProofCore internal properties,
+covers, and narrowly scoped test-only negative controls are authorized. Do not
+start ProofTrace, causal localization, a Bug Zoo, witness minimization,
+PassWitness, synthesis-stage equivalence, PPA/OpenROAD, or AI optimization.
+
+- Preserve the frozen M1 behavior and all M1/M2 regressions. RVFI remains off in
+  ordinary builds unless `PROOFCORE_RVFI` is explicitly defined.
+- Never silently weaken correctness checks to make a test pass. When a formal
+  check fails, preserve its trace/log where feasible, establish whether it is a
+  design defect, harness defect, or unsupported architectural behavior, then
+  fix the appropriate cause and rerun the check.
+- State every formal assumption in `formal/ASSUMPTIONS.md`, including why it is
+  required, what it excludes, whether it matches `SPEC.md`, and defects it
+  could hide. Audit assumptions and assertion antecedents for vacuity.
+- Report bounded BMC, induction/unbounded proof, and cover reachability as
+  different evidence. A BMC pass never implies unbounded correctness.
+- Keep intentional corruption behind explicit test-only defines. Normal RTL,
+  lint, synthesis, simulation, and formal campaigns must not enable them.
+- After M3 engineering gates pass, create the complete requested M3 learning
+  pack and leave every teach-back item `UNASSESSED` until the human answers it.
+- Do not claim human understanding from generated documentation or passing
+  checks.
 - After engineering gates pass, create the full M2 learning pack and leave every teach-back question `UNASSESSED` until answered by the human.

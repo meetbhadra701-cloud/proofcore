@@ -20,6 +20,15 @@ module regfile (
     end
   end
 
+`ifdef FORMAL
+  always_ff @(posedge clk) begin
+    if (!reset) begin
+      if (raddr1 == 5'd0) assert(rdata1 == 32'b0);
+      if (raddr2 == 5'd0) assert(rdata2 == 32'b0);
+    end
+  end
+`endif
+
   always_comb begin
     rdata1 = 32'b0;
     rdata2 = 32'b0;
@@ -31,5 +40,10 @@ module regfile (
       rdata2 = regs[raddr2];
       if (we && (waddr == raddr2)) rdata2 = wdata;
     end
+`ifdef PROOFCORE_NEGATIVE_X0
+    // Test-only mutant: this must be caught by the formal x0 invariant.
+    if (raddr1 == 5'd0) rdata1 = 32'd1;
+    if (raddr2 == 5'd0) rdata2 = 32'd1;
+`endif
   end
 endmodule

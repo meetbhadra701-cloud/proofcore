@@ -23,6 +23,24 @@ constexpr bool is_branch(const Operation op) noexcept {
          op == Operation::Bge || op == Operation::Bltu || op == Operation::Bgeu;
 }
 
+constexpr bool reads_rs1(const Operation op) noexcept {
+  return op == Operation::Add || op == Operation::Sub || op == Operation::Sll ||
+         op == Operation::Slt || op == Operation::Sltu || op == Operation::Xor ||
+         op == Operation::Srl || op == Operation::Sra || op == Operation::Or ||
+         op == Operation::And || op == Operation::Addi || op == Operation::Slti ||
+         op == Operation::Sltiu || op == Operation::Xori || op == Operation::Ori ||
+         op == Operation::Andi || op == Operation::Slli || op == Operation::Srli ||
+         op == Operation::Srai || is_load(op) || is_store(op) || is_branch(op) ||
+         op == Operation::Jalr;
+}
+
+constexpr bool reads_rs2(const Operation op) noexcept {
+  return op == Operation::Add || op == Operation::Sub || op == Operation::Sll ||
+         op == Operation::Slt || op == Operation::Sltu || op == Operation::Xor ||
+         op == Operation::Srl || op == Operation::Sra || op == Operation::Or ||
+         op == Operation::And || is_store(op) || is_branch(op);
+}
+
 constexpr std::uint8_t lane_mask(const std::uint32_t address,
                                  const unsigned byte_count) noexcept {
   const std::uint32_t low_mask = (1U << byte_count) - 1U;
@@ -73,6 +91,14 @@ RetireEvent Rv32iModel::step() {
   event.pc = pc;
   event.instruction = instruction;
   event.next_pc = pc + 4U;
+  if (reads_rs1(op)) {
+    event.rs1_addr = decoded.rs1;
+    event.rs1_rdata = lhs;
+  }
+  if (reads_rs2(op)) {
+    event.rs2_addr = decoded.rs2;
+    event.rs2_rdata = rhs;
+  }
 
   bool request_register_write = false;
   std::uint32_t result = 0U;
@@ -150,6 +176,7 @@ RetireEvent Rv32iModel::step() {
       if (is_load(op)) {
         event.mem_rmask = mask;
         const std::uint32_t word = memory_.read32(address & ~3U);
+        event.mem_rdata = word;
         const std::uint32_t raw = (word >> shift) & ((bytes == 4U) ? 0xffff'ffffU : ((1U << (8U * bytes)) - 1U));
         if (op == Operation::Lb) {
           const std::uint32_t byte = raw & 0xffU;

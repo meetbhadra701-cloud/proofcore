@@ -1,0 +1,29 @@
+[options]
+mode @MODE@
+depth @DEPTH@
+multiclock on
+
+[engines]
+abc bmc3
+
+[script]
+read -formal -sv -DPROOFCORE_RVFI -DFORMAL @NEGATIVE_DEFINE@ proofcore_pkg.sv alu.sv imm_gen.sv regfile.sv decoder.sv forwarding.sv hazard_unit.sv if_id.sv id_ex.sv ex_mem.sv mem_wb.sv core.sv formal_memory.sv formal_top.sv
+prep -top formal_top -flatten
+async2sync
+chformal -lower
+
+[files]
+@ROOT@/rtl/proofcore_pkg.sv
+@ROOT@/rtl/alu.sv
+@ROOT@/rtl/imm_gen.sv
+@ROOT@/rtl/regfile.sv
+@ROOT@/rtl/decoder.sv
+@ROOT@/rtl/forwarding.sv
+@ROOT@/rtl/hazard_unit.sv
+@ROOT@/rtl/pipeline/if_id.sv
+@ROOT@/rtl/pipeline/id_ex.sv
+@ROOT@/rtl/pipeline/ex_mem.sv
+@ROOT@/rtl/pipeline/mem_wb.sv
+@ROOT@/rtl/core.sv
+@ROOT@/formal/harness/formal_memory.sv
+@ROOT@/formal/harness/formal_top.sv

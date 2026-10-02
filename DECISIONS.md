@@ -128,3 +128,43 @@ None. No third-party CPU RTL was copied.
 - **Decision:** `--selftest-corrupt-retire N` flips an expected field at retirement N, triggers the normal mismatch artifact, and exits nonzero. The standard Make target checks that expected failure and artifact exist.
 - **Rationale:** It exercises comparator and artifact plumbing without modifying RTL/model semantics or enabling corruption in normal runs.
 - **Tradeoffs:** Self-test failure artifacts are not hardware failures and identify themselves as test-only corruption.
+
+### D-016 — Add optional RVFI observation at the existing WB retirement point
+
+- **Problem:** M1's retirement record lacks the standard register-source and memory-read fields needed by `riscv-formal`.
+- **Alternatives:** Change the always-on core interface; build an external adapter from incomplete M1 fields; add compile-time optional RVFI ports and carry the missing event metadata alongside the existing pipeline payload.
+- **Decision:** `PROOFCORE_RVFI` adds optional standard RVFI outputs. The source values are the forwarded EX operands carried through EX/MEM and MEM/WB; load read data is captured with the load retirement event. RVFI is published on the same valid WB event as the M1 record.
+- **Rationale:** This preserves ordinary M1/M2 builds and records the values actually used by dependent instructions, including forwarding cases.
+- **Tradeoffs:** The optional pipeline record grows under the define. It is still observation metadata rather than RVFI or a full formal retirement proof when the define is absent.
+
+### D-017 — Use upstream `riscv-formal` only for the documented supported subset
+
+- **Problem:** ProofCore intentionally omits privilege state and trap behavior, while the upstream framework includes wider architectural checks.
+- **Alternatives:** Claim all RV32I compliance; enable unrelated CSR/trap checks; run only generated supported-instruction checks plus applicable register, PC, order, and cover checks.
+- **Decision:** Pin YosysHQ `riscv-formal` at `c992aa61fdfe0846c5ed90324c596202a1c69b76` and SymbiYosys at `b1a1e98cba941ec8433f8dc27f416cd7bb7f14be`. Run 37 instruction checks for M1-supported integer operations, plus `reg`, `pc_fwd`, `pc_bwd`, and `unique` checks. Do not enable SYSTEM/CSR, privilege, or fault checks.
+- **Rationale:** This tests the actual M1 instruction contract without claiming architectural behaviors ProofCore does not implement.
+- **Tradeoffs:** The result is bounded and scoped. It is not full RV32I compliance or an unbounded proof.
+
+### D-018 — Constrain only unsupported alignment/trap cases in the formal wrapper
+
+- **Problem:** The upstream checker models architectural instruction/data misalignment traps; M1 freezes misaligned transfers and halfword/word accesses as inert operations and has no trap interface.
+- **Alternatives:** Change the M1 RTL to add traps; weaken the ISA checks; constrain only the wrapper executions to naturally aligned transfers and accesses.
+- **Decision:** Keep the frozen M1 behavior. The formal wrapper assumes naturally aligned taken branch/JAL/JALR targets and naturally aligned halfword/word data accesses. It also bounds addresses to its 32-byte memory model. Every constraint and its possible blind spots is listed in `formal/ASSUMPTIONS.md` and audited in `docs/formal/assumption-audit.md`.
+- **Rationale:** Aligned supported semantics remain checked against the upstream model, while non-implemented traps are excluded explicitly rather than falsely reported as passing.
+- **Tradeoffs:** Formal evidence does not cover misaligned cases, upper address regions, reset glitches, variable-latency memories, or external memory agents.
+
+### D-019 — Use stable symbolic Harvard memories for bounded checks
+
+- **Problem:** A concrete test program would prove only one image, while unconstrained independent reads would make memory behavior inconsistent.
+- **Alternatives:** Concrete ROM/RAM; nondeterministic data on every read; eight stable symbolic instruction words and eight symbolic initial data words with persistent masked stores.
+- **Decision:** Use the last option in `formal/harness/formal_memory.sv`.
+- **Rationale:** It provides arbitrary nearby instruction/data values while preserving instruction stability and store-to-load consistency at manageable proof cost.
+- **Tradeoffs:** The environment represents only 32 bytes and does not model faults, timing, caches, or concurrent writers.
+
+### D-020 — Separate bounded assertions, reachability covers, and negative controls
+
+- **Problem:** A single green formal status can hide bounded depth, unreachable antecedents, or broken failure reporting.
+- **Alternatives:** Run assertion BMC only; conflate covers with proofs; report each layer separately and add deliberate test-only corruption modes.
+- **Decision:** Maintain separate internal BMC, cover, upstream ISA, and negative-control commands. Internal property BMC is depth 16 with ABC `bmc3`; covers are depth 24 with Z3; expected failures are recorded as self-test passes with the observed formal `FAIL` retained.
+- **Rationale:** Each result has a distinct meaning and can be reproduced or inspected separately.
+- **Tradeoffs:** A cover proves reachability, not correctness. BMC proves only the configured finite bound. Z3 must be available for covers and negative-control traces.

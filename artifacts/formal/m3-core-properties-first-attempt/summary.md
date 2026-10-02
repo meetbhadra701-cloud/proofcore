@@ -1,0 +1,3 @@
+# Preserved M3 formal harness failure
+
+The first `core-properties` BMC run reached an assertion failure at frame 3 and produced an ABC AIGER witness. SymbiYosys' bundled `yosys-witness aiw2yw` converter then raised an `AssertionError`, so no VCD was emitted by this toolchain. The raw `trace.aiw`, AIGER signal map, converted witness if partial, SBY config, and solver log are retained. Investigation identified a test property that indexed `regs[0]` even though the architectural register file deliberately stores only `regs[1:31]`; the x0 property has been corrected to assert the public read-port contract. This artifact records the harness defect, not a claimed processor bug.

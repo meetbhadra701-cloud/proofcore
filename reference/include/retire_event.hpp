@@ -16,6 +16,12 @@ struct RetireEvent {
   std::uint8_t mem_wmask{};
   std::uint32_t mem_wdata{};
   std::uint32_t next_pc{};
+  // Supplemental RVFI expectations, retained separately from the M1 record.
+  std::uint8_t rs1_addr{};
+  std::uint8_t rs2_addr{};
+  std::uint32_t rs1_rdata{};
+  std::uint32_t rs2_rdata{};
+  std::uint32_t mem_rdata{};
 };
 
 }  // namespace proofcore::reference

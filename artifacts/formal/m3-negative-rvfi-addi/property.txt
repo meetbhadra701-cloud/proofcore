@@ -1,0 +1,5 @@
+Test-only mutation: PROOFCORE_RVFI_NEGATIVE flips bit 0 of rvfi_rd_wdata for any valid nonzero destination write.
+Counterexample: PC 0x8 retires `addi x16,x0,8`; the ISA model expects 8 and corrupted RVFI reports 9.
+Expected failure: pinned `rvfi_insn_check.sv:177` destination-result assertion in `insn_addi_ch0`.
+Observed formal result: FAIL, preserved in trace.vcd and solver.log.
+This expected FAIL makes the negative-control self-test PASS; it is not an RTL defect.

@@ -1,0 +1,4 @@
+Test-only mutation: PROOFCORE_NEGATIVE_X0 forces both register-file read ports to 1 whenever the selected address is x0.
+Expected failure: regfile formal assertions that an x0 read returns zero.
+Observed formal result: FAIL at step 3 on both read ports, preserved in trace.vcd and solver.log.
+This expected FAIL makes the negative-control self-test PASS; it is not an RTL defect.

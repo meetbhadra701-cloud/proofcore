@@ -2,37 +2,42 @@
 
 ## Current position
 
-- Milestone 1: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** Preserved at `54500b0a10da917249087fe246179b71066c1ced` (`milestone-1` tag); `make verify` passed before M2 changes.
-- Milestone 2: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** All requested M2 systems, final evidence, and learning materials are present.
-- Current task: none. Recommended next work is the human teach-back and then Milestone 3 planning.
-- RTL top remains `core` in `rtl/core.sv`; M2 has not modified processor RTL.
+- Milestone 1: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** Preserved at commit `54500b0a10da917249087fe246179b71066c1ced` (`milestone-1` tag).
+- Milestone 2: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** Preserved at commit `456744b7a06a9492e3b498e0a56a6ec418c71a6a` (`milestone-2` tag).
+- Milestone 3: **ENGINEERING COMPLETE; HUMAN LEARNING UNASSESSED.** Optional RVFI, pinned upstream ISA checks, internal bounded properties, covers, assumption/vacuity review, and formal negative controls are implemented and validated.
+- Current task: Milestone 3 final evidence and learning pack are complete. Milestone 4 has not started.
+- The processor top remains `core` in `rtl/core.sv`. RVFI is optional at compile time; the M1/M2 interface remains available when disabled.
 
-## Implemented M2 components
+## Milestone 3 implementation
 
-- Independent C++20 single-step reference state, decoder, byte memory, and retirement events under `reference/`.
-- Verilator driver and semantic retirement comparator under `sim/diff/`.
-- Separate, identically seeded RTL and reference memories; independent store application; per-load metadata/value comparison; final memory-byte comparison.
-- Python deterministic xorshift64* generator with arithmetic, dependency, memory, load-use, control, and mixed tiers.
-- Nine differential cases ported from the M1 Cocotb scenarios.
-- Structured mismatch artifacts and explicit test-only comparator corruption mode.
+- Optional RVFI retirement interface with standard RVFI signals and monotonically increasing retirement order.
+- M2 independent reference model and lockstep driver compare RVFI retirement fields in directed and deterministic random campaigns.
+- Pinned `riscv-formal` and SymbiYosys submodules, per-instruction configurations, a bounded formal wrapper and symbolic finite memories.
+- Internal assertions cover x0 reads, retirement/order validity, forwarding value and priority, load-use stall behavior, redirect/flush behavior, and memory side-effect qualification.
+- Reachability covers and two mutation-based negative controls demonstrate that the formal environment reaches important behaviors and detects injected faults.
 
 ## Final validation evidence
 
-- `make verify`: PASS after final M2 code changes; includes M1 lint/simulation/synthesis and all M2 gates.
-- `make reference-test`: PASS, four C++ unit suites under `-Wall -Wextra -Wpedantic -Werror`.
-- `make diff-directed`: PASS, nine M1-derived programs, 90 retirements, 148 RTL cycles.
-- `make comparator-selftest`: PASS as a Make target; injected x6 14→7 at retirement 2 produced the required mismatch/artifact and replayed.
-- `make diff-random`: PASS, 500 programs, seeds 12345–12844, 11,188 retirement comparisons, 15,521 RTL cycles, no failures/timeouts.
-- Exact tier counts, static instruction totals, tool versions, and commands are in `docs/verification/milestone-2.md`.
-- Formal verification: NOT RUN. M2 differential testing is empirical and is not proof of correctness.
+- `make verify`: PASS after M3 changes; preserves the ordinary M1/M2 regression with RVFI disabled.
+- `make verify-m1`: PASS; nine Cocotb directed scenarios, 498 ns, lint, and synthesis checks.
+- `make verify-m3-sim`: PASS; RVFI-directed nine programs / 90 retirements / 148 cycles and RVFI-random 500 programs / seeds 12345–12844 / 11,188 retirements / 15,521 cycles, alongside M2 comparisons.
+- `make formal-rvfi`: 41/41 applicable upstream instruction and consistency checks PASS at bounded depth 12 (37 supported instruction checks plus four PC/register/order checks).
+- `make formal-properties`: PASS, ABC `bmc3` bounded depth 16.
+- `make formal-cover`: 13 cover statements reached in 12 retained traces, bounded depth 24, Z3 4.13.3.
+- `make formal-negative`: both injected faults detected as expected: corrupted RVFI destination value and broken x0 reads.
+- `make lint` and `make lint-rvfi`: PASS with Verilator 5.032, zero warnings.
+- `make synth-check` and `make synth-check-rvfi`: PASS with Yosys 0.52; 8,556 and 9,296 generic cells respectively. These counts are not PPA results.
+- Detailed commands, tools, assumptions, runtimes, and result files are in `docs/verification/milestone-3.md` and `formal/results/results.json`.
 
-## Known tool and project limitations
+## Limitations and known issues
 
-- C++ compiler is GCC 15.2.0; Verilator 5.032; Python 3.14.4 in the current environment. The M1 Yosys 0.52 result is recorded separately.
-- The installed Verilator 5.032 support source emits two `%p` format warnings under GCC 15.2; the Verilator harness build uses `-Wno-error=format` for that third-party runtime issue. The reference model and its tests still compile with full `-Werror`.
-- The reference implements exactly the M1 subset and deterministic no-effect unsupported/misalignment policies. It does not model traps or privilege architecture.
-- Random generation is structured and bounded, not exhaustive. The failure system does not minimize witnesses or localize root cause.
+- Formal ISA checks cover the implemented 37-instruction subset and selected consistency checks, not all RV32I architectural features.
+- Bounded BMC results are not induction or unbounded proofs. No claim of complete formal correctness is made.
+- Formal models use finite symbolic instruction/data memories and assume bounded addresses plus aligned control-flow and halfword/word accesses. M1 does not implement architectural traps for misalignment, illegal instructions, or other exceptions.
+- No caches, wait states, external memory agents, privilege behavior, interrupts, or full address-space behavior are modeled.
+- Generic Yosys cell counts do not establish timing, area, or physical-design quality.
+- No RTL architectural bug was found in this milestone. Early failures were in a formal property/clock harness and a mismatch between M1's no-trap alignment policy and upstream trap expectations; these are documented with evidence.
 
 ## Learning state
 
-Milestone 1 and Milestone 2 teach-back questions remain `UNASSESSED`. Reading AI-generated explanations is not evidence of human mastery.
+Milestone 1, 2, and 3 teach-back materials are present, but all remain **UNASSESSED**. Reading the material does not establish human mastery. See `docs/learning/milestone-3/FINAL_TEACHBACK.md` for the M3 questions.

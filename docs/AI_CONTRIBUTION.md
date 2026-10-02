@@ -26,6 +26,40 @@ For M2, the reference model was separately compiled and tested with GCC 15.2.0 u
 
 During development, early C++ test expectations for SLL/XOR-family results and a misaligned JALR test target were corrected after checking the actual encoded operands and M1 alignment policy. These were reference-test construction errors, not discovered RTL defects. No RTL source was changed for M2.
 
+## Milestone 3 contribution
+
+Codex generated the optional RVFI instrumentation, the RVFI fields carried
+through the pipeline, the C++ expected-event extensions and comparator checks,
+the pinned formal submodules/configuration, symbolic memory and clock/reset
+harness, the `riscv-formal` runner, internal properties/covers, two explicit
+negative-control modes, formal result manifest, audits, reports, and the M3
+learning pack. Upstream YosysHQ `riscv-formal` and SymbiYosys source remain
+separate pinned submodules with their original attribution and licenses.
+
+Validation used Verilator 5.032, Yosys 0.52, the pinned SymbiYosys and
+`riscv-formal` revisions, ABC `bmc3`, and Z3 4.13.3 for covers and expected
+failure traces. The final campaign checked 37 supported instructions plus
+four register/PC/order checks, ran bounded internal assertions and covers,
+compared directed and 500-program RVFI streams with the independent M2 model,
+and deliberately corrupted RVFI result data and x0 reads to prove both formal
+layers detect failures. Exact evidence is in `docs/verification/milestone-3.md`
+and the per-check `formal/results/results.json` manifest.
+
+During M3, an initial property referenced a nonexistent physical `regs[0]`,
+and an initial formal clock setup did not model a reliably advancing DUT clock.
+Those were formal-harness/property errors, not changes to the processor's
+architectural behavior; the broken attempt artifacts are preserved under
+`artifacts/formal/m3-core-properties-first-attempt/`. The first upstream run
+also exposed the documented mismatch between M1's no-trap alignment policy and
+the upstream framework's trap model. The RTL was not changed to fake traps;
+the aligned subset and its limitations are documented in `formal/ASSUMPTIONS.md`.
+
 ## What this does and does not establish
 
-These checks are useful engineering evidence, but they are not an independent human implementation, a formal proof, or proof that every possible program is correct. No one has yet completed either teach-back exam. The human is expected to study the generated design and validate their own understanding before claiming independent authorship or mastery.
+These checks are useful engineering evidence, but they are not an independent
+human implementation, an unbounded proof of the processor, or proof that every
+possible program is correct. The M3 ISA and internal assertion results are
+bounded and scoped by the documented assumptions; covers establish
+reachability only. No one has yet completed the M1, M2, or M3 teach-back exams.
+The human is expected to study the generated design and validate their own
+understanding before claiming independent authorship or mastery.

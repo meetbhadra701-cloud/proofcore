@@ -1,0 +1,42 @@
+Elapsed clock time [H:MM:SS (secs)]: 0:00:16 (16)
+Elapsed process time [H:MM:SS (secs)]: 0:00:15 (15)
+engine_0 (smtbmc z3) returned pass
+cover trace: engine_0/trace0.vcd
+cover trace: engine_0/trace0.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_474_263 at core.sv:474.7-474.28 step 7
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_479_277 at core.sv:479.7-479.25 step 7
+cover trace: engine_0/trace1.vcd
+cover trace: engine_0/trace1.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_480_278 at core.sv:480.7-480.26 step 7
+cover trace: engine_0/trace10.vcd
+cover trace: engine_0/trace10.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_472_255 at core.sv:472.7-473.66 step 11
+cover trace: engine_0/trace11.vcd
+cover trace: engine_0/trace11.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_483_283 at core.sv:483.7-484.73 step 11
+cover trace: engine_0/trace2.vcd
+cover trace: engine_0/trace2.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_478_275 at core.sv:478.7-478.44 step 7
+cover trace: engine_0/trace3.vcd
+cover trace: engine_0/trace3.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_475_264 at core.sv:475.7-475.73 step 7
+cover trace: engine_0/trace4.vcd
+cover trace: engine_0/trace4.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_476_268 at core.sv:476.7-476.76 step 7
+cover trace: engine_0/trace5.vcd
+cover trace: engine_0/trace5.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_477_273 at core.sv:477.7-477.43 step 7
+cover trace: engine_0/trace6.vcd
+cover trace: engine_0/trace6.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_470_247 at core.sv:470.7-470.66 step 9
+cover trace: engine_0/trace7.vcd
+cover trace: engine_0/trace7.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_449_242 at core.sv:449.48-449.59 step 11
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_481_279 at core.sv:481.7-481.47 step 11
+cover trace: engine_0/trace8.vcd
+cover trace: engine_0/trace8.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_471_251 at core.sv:471.7-471.66 step 11
+cover trace: engine_0/trace9.vcd
+cover trace: engine_0/trace9.yw
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_450_244 at core.sv:450.51-450.62 step 11
+  reached cover statement formal_top._witness_.cover_flatten_u_core__cover_core_sv_482_281 at core.sv:482.7-482.50 step 11

@@ -65,6 +65,12 @@ package proofcore_pkg;
     logic [3:0]  mem_read_mask;
     logic [3:0]  mem_write_mask;
     logic [31:0] mem_write_data;
+`ifdef PROOFCORE_RVFI
+    logic        uses_rs1;
+    logic        uses_rs2;
+    logic [31:0] rs1_value;
+    logic [31:0] rs2_value;
+`endif
   } exmem_t;
 
   typedef struct packed {
@@ -78,6 +84,13 @@ package proofcore_pkg;
     logic [3:0]  mem_write_mask;
     logic [31:0] mem_write_data;
     logic [31:0] next_pc;
+`ifdef PROOFCORE_RVFI
+    logic        uses_rs1;
+    logic        uses_rs2;
+    logic [31:0] rs1_value;
+    logic [31:0] rs2_value;
+    logic [31:0] mem_read_data;
+`endif
   } memwb_t;
 
   typedef struct packed {

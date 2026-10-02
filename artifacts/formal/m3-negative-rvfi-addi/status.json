@@ -1,0 +1,16 @@
+{
+  "selftest_status": "PASS",
+  "expected_formal_status": "FAIL",
+  "observed_formal_status": "FAIL",
+  "check": "insn_addi_ch0",
+  "mutation": "flip rvfi_rd_wdata bit 0 when rvfi_valid and rvfi_rd_addr != 0",
+  "engine": "smtbmc z3",
+  "formal_depth": 12,
+  "runtime_seconds": 96.49,
+  "counterexample_step": 12,
+  "instruction": "addi x16,x0,8 at PC 0x00000008",
+  "expected_rd_wdata": "0x00000008",
+  "observed_rd_wdata": "0x00000009",
+  "failed_property": "rvfi_insn_check.sv:177 destination result",
+  "source_define": "PROOFCORE_RVFI_NEGATIVE"
+}

@@ -1,0 +1,29 @@
+[options]
+mode bmc
+depth 16
+multiclock on
+
+[engines]
+abc bmc3
+
+[script]
+read -formal -sv -DPROOFCORE_RVFI -DFORMAL proofcore_pkg.sv alu.sv imm_gen.sv regfile.sv decoder.sv forwarding.sv hazard_unit.sv if_id.sv id_ex.sv ex_mem.sv mem_wb.sv core.sv formal_memory.sv formal_top.sv
+prep -top formal_top -flatten
+async2sync
+chformal -lower
+
+[files]
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/proofcore_pkg.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/alu.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/imm_gen.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/regfile.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/decoder.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/forwarding.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/hazard_unit.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/pipeline/if_id.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/pipeline/id_ex.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/pipeline/ex_mem.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/pipeline/mem_wb.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/rtl/core.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_memory.sv
+/mnt/c/Users/meetb/Documents/Projects/shipclaw-final/proofcore/formal/harness/formal_top.sv

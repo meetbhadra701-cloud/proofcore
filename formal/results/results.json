@@ -1,0 +1,732 @@
+{
+  "framework": "YosysHQ/riscv-formal",
+  "framework_commit": "c992aa61fdfe0846c5ed90324c596202a1c69b76",
+  "symbiyosys_commit": "b1a1e98cba941ec8433f8dc27f416cd7bb7f14be",
+  "yosys": "Yosys 0.52 (git sha1 fee39a3284c90249e1d9684cf6944ffbbcbb8f90)",
+  "solver": "ABC bmc3 (part of Yosys 0.52 (git sha1 fee39a3284c90249e1d9684cf6944ffbbcbb8f90))",
+  "mode": "bounded model checking; no unbounded result is claimed",
+  "generation_runtime_seconds": 8.051,
+  "checks": [
+    {
+      "name": "pc_bwd_ch0",
+      "category": "RVFI consistency",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 22.026,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/pc_bwd_ch0",
+      "log_path": "build/formal/riscv-formal-pc_bwd_ch0.log"
+    },
+    {
+      "name": "pc_fwd_ch0",
+      "category": "RVFI consistency",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 20.83,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/pc_fwd_ch0",
+      "log_path": "build/formal/riscv-formal-pc_fwd_ch0.log"
+    },
+    {
+      "name": "reg_ch0",
+      "category": "RVFI consistency",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 20.173,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/reg_ch0",
+      "log_path": "build/formal/riscv-formal-reg_ch0.log"
+    },
+    {
+      "name": "unique_ch0",
+      "category": "RVFI consistency",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 17.828,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/unique_ch0",
+      "log_path": "build/formal/riscv-formal-unique_ch0.log"
+    },
+    {
+      "name": "insn_add_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 19.234,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_add_ch0",
+      "log_path": "build/formal/riscv-formal-insn_add_ch0.log"
+    },
+    {
+      "name": "insn_addi_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 16.44,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0",
+      "log_path": "build/formal/riscv-formal-insn_addi_ch0.log"
+    },
+    {
+      "name": "insn_and_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 17.102,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_and_ch0",
+      "log_path": "build/formal/riscv-formal-insn_and_ch0.log"
+    },
+    {
+      "name": "insn_andi_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 17.041,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_andi_ch0",
+      "log_path": "build/formal/riscv-formal-insn_andi_ch0.log"
+    },
+    {
+      "name": "insn_auipc_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 17.226,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_auipc_ch0",
+      "log_path": "build/formal/riscv-formal-insn_auipc_ch0.log"
+    },
+    {
+      "name": "insn_beq_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 15.547,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_beq_ch0",
+      "log_path": "build/formal/riscv-formal-insn_beq_ch0.log"
+    },
+    {
+      "name": "insn_bge_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 13.037,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_bge_ch0",
+      "log_path": "build/formal/riscv-formal-insn_bge_ch0.log"
+    },
+    {
+      "name": "insn_bgeu_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 12.326,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_bgeu_ch0",
+      "log_path": "build/formal/riscv-formal-insn_bgeu_ch0.log"
+    },
+    {
+      "name": "insn_blt_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 13.106,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_blt_ch0",
+      "log_path": "build/formal/riscv-formal-insn_blt_ch0.log"
+    },
+    {
+      "name": "insn_bltu_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 13.138,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_bltu_ch0",
+      "log_path": "build/formal/riscv-formal-insn_bltu_ch0.log"
+    },
+    {
+      "name": "insn_bne_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 11.949,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_bne_ch0",
+      "log_path": "build/formal/riscv-formal-insn_bne_ch0.log"
+    },
+    {
+      "name": "insn_jal_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 12.646,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_jal_ch0",
+      "log_path": "build/formal/riscv-formal-insn_jal_ch0.log"
+    },
+    {
+      "name": "insn_jalr_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 12.682,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_jalr_ch0",
+      "log_path": "build/formal/riscv-formal-insn_jalr_ch0.log"
+    },
+    {
+      "name": "insn_lb_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 12.475,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_lb_ch0",
+      "log_path": "build/formal/riscv-formal-insn_lb_ch0.log"
+    },
+    {
+      "name": "insn_lbu_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 13.974,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_lbu_ch0",
+      "log_path": "build/formal/riscv-formal-insn_lbu_ch0.log"
+    },
+    {
+      "name": "insn_lh_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 17.568,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_lh_ch0",
+      "log_path": "build/formal/riscv-formal-insn_lh_ch0.log"
+    },
+    {
+      "name": "insn_lhu_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 21.167,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_lhu_ch0",
+      "log_path": "build/formal/riscv-formal-insn_lhu_ch0.log"
+    },
+    {
+      "name": "insn_lui_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 16.601,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_lui_ch0",
+      "log_path": "build/formal/riscv-formal-insn_lui_ch0.log"
+    },
+    {
+      "name": "insn_lw_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 19.952,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_lw_ch0",
+      "log_path": "build/formal/riscv-formal-insn_lw_ch0.log"
+    },
+    {
+      "name": "insn_or_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 13.783,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_or_ch0",
+      "log_path": "build/formal/riscv-formal-insn_or_ch0.log"
+    },
+    {
+      "name": "insn_ori_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 20.221,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_ori_ch0",
+      "log_path": "build/formal/riscv-formal-insn_ori_ch0.log"
+    },
+    {
+      "name": "insn_sb_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 21.698,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sb_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sb_ch0.log"
+    },
+    {
+      "name": "insn_sh_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 13.521,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sh_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sh_ch0.log"
+    },
+    {
+      "name": "insn_sll_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 15.813,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sll_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sll_ch0.log"
+    },
+    {
+      "name": "insn_slli_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 12.043,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_slli_ch0",
+      "log_path": "build/formal/riscv-formal-insn_slli_ch0.log"
+    },
+    {
+      "name": "insn_slt_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 11.048,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_slt_ch0",
+      "log_path": "build/formal/riscv-formal-insn_slt_ch0.log"
+    },
+    {
+      "name": "insn_slti_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 10.953,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_slti_ch0",
+      "log_path": "build/formal/riscv-formal-insn_slti_ch0.log"
+    },
+    {
+      "name": "insn_sltiu_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 15.608,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sltiu_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sltiu_ch0.log"
+    },
+    {
+      "name": "insn_sltu_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 16.655,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sltu_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sltu_ch0.log"
+    },
+    {
+      "name": "insn_sra_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 18.983,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sra_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sra_ch0.log"
+    },
+    {
+      "name": "insn_srai_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 17.251,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_srai_ch0",
+      "log_path": "build/formal/riscv-formal-insn_srai_ch0.log"
+    },
+    {
+      "name": "insn_srl_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 17.763,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_srl_ch0",
+      "log_path": "build/formal/riscv-formal-insn_srl_ch0.log"
+    },
+    {
+      "name": "insn_srli_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 16.142,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_srli_ch0",
+      "log_path": "build/formal/riscv-formal-insn_srli_ch0.log"
+    },
+    {
+      "name": "insn_sub_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 20.017,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sub_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sub_ch0.log"
+    },
+    {
+      "name": "insn_sw_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 22.621,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_sw_ch0",
+      "log_path": "build/formal/riscv-formal-insn_sw_ch0.log"
+    },
+    {
+      "name": "insn_xor_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 20.582,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_xor_ch0",
+      "log_path": "build/formal/riscv-formal-insn_xor_ch0.log"
+    },
+    {
+      "name": "insn_xori_ch0",
+      "category": "ISA instruction",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "ABC bmc3 bundled with Yosys",
+      "status": "PASS",
+      "runtime_seconds": 18.568,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_xori_ch0",
+      "log_path": "build/formal/riscv-formal-insn_xori_ch0.log"
+    },
+    {
+      "name": "core-properties-prove",
+      "category": "ProofCore internal properties",
+      "mode": "bounded model checking",
+      "depth": 16,
+      "solver": "abc bmc3",
+      "status": "PASS",
+      "runtime_seconds": 14.276,
+      "assumptions": [
+        "initial synchronous reset",
+        "32-byte stable symbolic instruction/data windows"
+      ],
+      "artifact_path": "build/formal/core-properties-prove/core-properties-prove",
+      "log_path": "build/formal/core-properties-prove/solver.log"
+    },
+    {
+      "name": "core-properties-cover",
+      "category": "ProofCore cover reachability",
+      "mode": "bounded cover",
+      "depth": 24,
+      "solver": "smtbmc z3",
+      "status": "COVERED",
+      "runtime_seconds": 31.0,
+      "assumptions": [
+        "initial synchronous reset",
+        "32-byte stable symbolic instruction/data windows"
+      ],
+      "artifact_path": "build/formal/core-properties-cover/core-properties-cover",
+      "log_path": "build/formal/core-properties-cover/solver.log"
+    },
+    {
+      "name": "negative-rvfi-insn_addi_ch0",
+      "category": "Negative-control self-test",
+      "mode": "bounded model checking",
+      "depth": 12,
+      "solver": "smtbmc z3",
+      "status": "PASS",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "runtime_seconds": 138.658,
+      "assumptions": [
+        "single 32-byte instruction/data address window",
+        "stable symbolic initial memory",
+        "riscv-formal check constraints"
+      ],
+      "artifact_path": "build/formal/riscv-formal/cores/proofcore/checks/insn_addi_ch0",
+      "log_path": "build/formal/riscv-formal-insn_addi_ch0.log"
+    },
+    {
+      "name": "negative-x0-selftest",
+      "category": "Negative-control self-test",
+      "mode": "bounded model checking",
+      "depth": 16,
+      "solver": "smtbmc z3",
+      "status": "PASS",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "runtime_seconds": 7.418,
+      "assumptions": [
+        "initial synchronous reset",
+        "32-byte stable symbolic instruction/data windows"
+      ],
+      "artifact_path": "build/formal/negative-x0-selftest/negative-x0-selftest",
+      "log_path": "build/formal/negative-x0-selftest/solver.log"
+    }
+  ]
+}

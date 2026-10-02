@@ -14,6 +14,38 @@
 namespace proofcore::diff {
 namespace {
 
+#ifdef PROOFCORE_RVFI
+std::vector<std::string> compare_rvfi(const Vcore& dut,
+                                      const proofcore::reference::RetireEvent& expected,
+                                      const std::uint64_t order) {
+  std::vector<std::string> errors;
+  const auto check = [&errors](const bool condition, const char* field) {
+    if (!condition) errors.emplace_back(std::string("rvfi_") + field);
+  };
+  check(dut.rvfi_valid != 0U, "valid");
+  check(dut.rvfi_order == order, "order");
+  check(dut.rvfi_insn == expected.instruction, "insn");
+  check(dut.rvfi_trap == 0U && dut.rvfi_halt == 0U && dut.rvfi_intr == 0U, "metadata");
+  check(dut.rvfi_mode == 3U && dut.rvfi_ixl == 1U, "mode_ixl");
+  check(dut.rvfi_rs1_addr == expected.rs1_addr, "rs1_addr");
+  check(dut.rvfi_rs2_addr == expected.rs2_addr, "rs2_addr");
+  check(dut.rvfi_rs1_rdata == expected.rs1_rdata, "rs1_rdata");
+  check(dut.rvfi_rs2_rdata == expected.rs2_rdata, "rs2_rdata");
+  check(dut.rvfi_rd_addr == expected.rd, "rd_addr");
+  check(dut.rvfi_rd_wdata == expected.rd_value, "rd_wdata");
+  check(dut.rvfi_pc_rdata == expected.pc, "pc_rdata");
+  check(dut.rvfi_pc_wdata == expected.next_pc, "pc_wdata");
+  const std::uint32_t aligned_addr = (expected.mem_rmask != 0U || expected.mem_wmask != 0U)
+                                         ? (expected.mem_addr & ~3U) : 0U;
+  check(dut.rvfi_mem_addr == aligned_addr, "mem_addr");
+  check(dut.rvfi_mem_rmask == expected.mem_rmask, "mem_rmask");
+  check(dut.rvfi_mem_wmask == expected.mem_wmask, "mem_wmask");
+  check(dut.rvfi_mem_rdata == expected.mem_rdata, "mem_rdata");
+  check(dut.rvfi_mem_wdata == expected.mem_wdata, "mem_wdata");
+  return errors;
+}
+#endif
+
 proofcore::reference::RetireEvent observed_event(const Vcore& dut) {
   proofcore::reference::RetireEvent event{};
   event.valid = dut.retire_valid != 0U;
@@ -116,6 +148,15 @@ RunResult RtlDriver::run(const ProgramCase& program, const bool corrupt_observed
       const proofcore::reference::ArchitecturalState state_before = model.state();
       const proofcore::reference::RetireEvent expected = model.step();
       proofcore::reference::RetireEvent observed = observed_event(dut_);
+#ifdef PROOFCORE_RVFI
+      const auto rvfi_errors = compare_rvfi(dut_, expected, result.retirements);
+      if (!rvfi_errors.empty()) {
+        result.success = false;
+        result.status = "FAIL";
+        result.message = "RVFI event differs at " + hex32(expected.pc) + ": " + rvfi_errors.front();
+        return result;
+      }
+#endif
       if (corrupt_observed && result.retirements + 1U == corrupt_retirement) {
         // Mutate only this sampled comparison copy, never the RTL or model.
         if (expected.rd_write && expected.rd_value == 14U) observed.rd_value = 7U;

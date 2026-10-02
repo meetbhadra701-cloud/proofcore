@@ -142,3 +142,22 @@ The top-level SystemVerilog module exposes these record members as individual pa
 ## M1 acceptance boundary and limitations
 
 M1 is complete only after representative instruction programs, directed hazard/control/memory tests, lint, simulation regression, and a basic Yosys synthesis check pass, and all required learning records exist. Simulation success is not a formal proof. M1 supports aligned accesses, single-cycle memories, fixed-width instructions, and no architectural trap/interrupt behavior. These limits must remain visible in status and the final report.
+
+## Milestone-3 verification addendum
+
+M3 does not change the M1 architectural contract. When `PROOFCORE_RVFI` is
+defined, the core additionally exposes the standard RVFI fields for XLEN=32,
+ILEN=32, and one retirement per cycle. `rvfi_valid` coincides with the valid
+MEM/WB retirement event; `rvfi_order` starts at zero after reset and increments
+only for that event. Source data represents the architectural values used by
+the retiring instruction after forwarding. Memory masks use aligned 32-bit
+little-endian lanes, and load read data is the aligned word read before any
+store update at that edge. The ordinary M1 retirement record and behavior stay
+unchanged when the define is absent.
+
+RVFI reports M-mode (`rvfi_mode=2'b11`) and RV32 (`rvfi_ixl=2'b01`) to match
+the upstream RVFI encoding, but this does not add privilege state. Trap, halt,
+and interrupt outputs are zero because M1 has no such architecture. M3 does not
+claim illegal-instruction or misalignment-trap compliance. The exact formal
+subset and the assumptions that exclude these unsupported trap cases are in
+`formal/ASSUMPTIONS.md`.

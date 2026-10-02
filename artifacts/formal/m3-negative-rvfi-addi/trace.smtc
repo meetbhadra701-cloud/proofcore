@@ -1,0 +1,77 @@
+initial
+assume (= [cycle_reg] #x00)
+assume (= [wrapper.u_core.pc_q] #x00000004)
+assume (= [wrapper.u_core.rvfi_order_q] #x0000000000000000)
+assume (= [wrapper.u_core.u_ex_mem.data_out] #b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)
+assume (= [wrapper.u_core.u_ex_mem.valid_out] false)
+assume (= [wrapper.u_core.u_id_ex.data_out] #b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)
+assume (= [wrapper.u_core.u_id_ex.valid_out] false)
+assume (= [wrapper.u_core.u_if_id.data_out] #x0000000000000000)
+assume (= [wrapper.u_core.u_if_id.valid_out] true)
+assume (= [wrapper.u_core.u_mem_wb.data_out] #x0000000000000000000000000000000000000000000000000000000000000000000000000000)
+assume (= [wrapper.u_core.u_mem_wb.valid_out] false)
+assume (= [wrapper.u_formal_memory.data_memory[0]] #x81008001)
+assume (= [wrapper.u_formal_memory.data_memory[1]] #x81008001)
+assume (= [wrapper.u_formal_memory.data_memory[2]] #x04200080)
+assume (= [wrapper.u_formal_memory.data_memory[3]] #x04200081)
+assume (= [wrapper.u_formal_memory.data_memory[4]] #x8e800000)
+assume (= [wrapper.u_formal_memory.data_memory[5]] #x20800000)
+assume (= [wrapper.u_formal_memory.data_memory[6]] #x8e800000)
+assume (= [wrapper.u_formal_memory.data_memory[7]] #x40800002)
+assume (= (select [wrapper.u_core.u_regfile.regs] #b00000) #x00000001)
+assume (= (select [wrapper.u_core.u_regfile.regs] #b10000) #x00000000)
+assume (= (select [wrapper.u_core.u_regfile.regs] #b11100) #x00000000)
+assume (= (select [wrapper.u_core.u_regfile.regs] #b01000) #x00000000)
+assume (= (select [wrapper.u_core.u_regfile.regs] #b00100) #x00000000)
+
+state 0
+assume (= [clock] false)
+assume (= [reset] true)
+
+state 1
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 2
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 3
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 4
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 5
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 6
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 7
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 8
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 9
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 10
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 11
+assume (= [clock] false)
+assume (= [reset] false)
+
+state 12
+assume (= [clock] false)
+assume (= [reset] false)
